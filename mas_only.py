@@ -78,7 +78,7 @@ def job(sym, tframe):
             #print(crossings['bear'][-1], i)
             if i == length:
                 return crossings['bear'][-1]
-    
+
     '''
     plt.plot(df.close, label=sym+' Price')
     plt.plot(exp50, label=sym+' 50 EMA')
@@ -88,28 +88,8 @@ def job(sym, tframe):
     '''
     return False
 
-def runhour():
-    v = job('BTC', 'histohour')
-    if v:
-        telegram_bot_sendtext(v)
-    v = job('XRP', 'histohour')
-    if v:
-        telegram_bot_sendtext(v)
-    v = job('ETH', 'histohour')
-    if v:
-        telegram_bot_sendtext(v)
 
-def runday():
-    v = job('BTC', 'histoday')
-    if v:
-        telegram_bot_sendtext(v)
-    v = job('XRP', 'histoday')
-    if v:
-        telegram_bot_sendtext(v)
-    v = job('ETH', 'histoday')
-    if v:
-        telegram_bot_sendtext(v)
-
+'''
 #main/scheduling
 print('starting...')
 schedule.every().hour.do(runhour)
@@ -117,4 +97,4 @@ schedule.every().day.at("00:00").do(runday)
 while True:
     schedule.run_pending()
     time.sleep(1)
-
+'''
