@@ -92,9 +92,21 @@ def runhour():
     v = job('BTC', 'histohour')
     if v:
         telegram_bot_sendtext(v)
+    v = job('XRP', 'histohour')
+    if v:
+        telegram_bot_sendtext(v)
+    v = job('ETH', 'histohour')
+    if v:
+        telegram_bot_sendtext(v)
 
 def runday():
     v = job('BTC', 'histoday')
+    if v:
+        telegram_bot_sendtext(v)
+    v = job('XRP', 'histoday')
+    if v:
+        telegram_bot_sendtext(v)
+    v = job('ETH', 'histoday')
     if v:
         telegram_bot_sendtext(v)
 
