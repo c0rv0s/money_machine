@@ -71,12 +71,12 @@ def job(sym, tframe):
         if exp50[i-1] < exp99[i-1] and exp50[i] > exp99[i]:
             crossings['bull'].append("bullish cross on %s %s at %s, price is %d" % (sym, tframe[5:], datetime.fromtimestamp(time[i]), df.close[i]))
             #print(crossings['bull'][-1], i)
-            if i == 1000:
+            if i == length:
                 return crossings['bull'][-1]
         elif exp50[i-1] > exp99[i-1] and exp50[i] < exp99[i]:
             crossings['bear'].append("bearish cross on %s %s at %s, price is %d" % (sym, tframe[5:], datetime.fromtimestamp(time[i]), df.close[i]))
             #print(crossings['bear'][-1], i)
-            if i == 1000:
+            if i == length:
                 return crossings['bear'][-1]
     
     '''
@@ -99,6 +99,7 @@ def runday():
         telegram_bot_sendtext(v)
 
 #main/scheduling
+print('starting...')
 schedule.every().hour.do(runhour)
 schedule.every().day.at("00:00").do(runday)
 while True:
