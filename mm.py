@@ -85,9 +85,9 @@ def mm_job(sym, tframe):
             markersdown.append(i)
     
     if hullma[length] >= hullma[length - smoothe] and direction != 'up':
-        return('new direction is up, '+str(datetime.fromtimestamp(time[length])))
+        return('new direction is up, '+sym+', '+tframe[5:]+' '+str(datetime.fromtimestamp(time[length])))
     if hullma[length] < hullma[length - smoothe] and direction != 'down':
-        return('new direction is down, '+str(datetime.fromtimestamp(time[length])))
+        return('new direction is down, '+sym+', '+tframe[5:]+', '+str(datetime.fromtimestamp(time[length])))
     return False
     '''
     plt.plot(df.close, label=sym+' Price')
