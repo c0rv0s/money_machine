@@ -1,12 +1,11 @@
 # script to calculate ultimate MA indicator and then report results to telegram
 
-import math, time, schedule
+import math, time
 import requests
 import pandas as pd
 import numpy as np
 from datetime import datetime
 import matplotlib.pyplot as plt
-from datetime import datetime
 
 def telegram_bot_sendtext(bot_message):
     
@@ -46,23 +45,6 @@ def job(sym, tframe):
     data = {'close': close}
     df = pd.DataFrame(data)
     
-    '''
-    rolling_mean50 = df.close.rolling(window=50).mean()
-    rolling_mean99 = df.close.rolling(window=99).mean()
-    rolling_mean200 = df.close.rolling(window=200).mean()
-    
-    for i in range(1,1000):
-        if rolling_mean50[i-1] < rolling_mean99[i-1] and rolling_mean50[i] > rolling_mean99[i]:
-            print("bullish cross at %d" %i)
-    
-    plt.plot(df.close, label="XBT Price")
-    plt.plot(rolling_mean50, label='XBT 50 Day SMA', color='magenta')
-    plt.plot(rolling_mean99, label='XBT 99 Day SMA', color='orange')
-    plt.plot(rolling_mean200, label='XBT 200 Day SMA', color='green')
-    plt.legend(loc='upper left')
-    plt.show()
-    '''
-    
     exp50 = df.close.ewm(span=50, adjust=False).mean()
     exp99 = df.close.ewm(span=99, adjust=False).mean()
     
@@ -78,7 +60,7 @@ def job(sym, tframe):
             #print(crossings['bear'][-1], i)
             if i == length:
                 return crossings['bear'][-1]
-
+    #print(crossings)
     '''
     plt.plot(df.close, label=sym+' Price')
     plt.plot(exp50, label=sym+' 50 EMA')
@@ -87,14 +69,3 @@ def job(sym, tframe):
     plt.show()
     '''
     return False
-
-
-'''
-#main/scheduling
-print('starting...')
-schedule.every().hour.do(runhour)
-schedule.every().day.at("00:00").do(runday)
-while True:
-    schedule.run_pending()
-    time.sleep(1)
-'''
