@@ -70,29 +70,29 @@ def mm_job(sym, tframe):
     c4 = 1 + 3 * a + a ** (3) + 3 * a ** (2)
     tilT3 = c1*ema6 + c2*ema5 + c3*ema4 + c4*ema3
     
-    #we are going to use the hullma
+    #we are going to use the tema
     direction = 'none'
     markersup = []
     markersdown = []
     for i in range(smoothe,length):
-        if hullma[i] >= hullma[i - smoothe] and direction != 'up':
+        if tema[i] >= tema[i - smoothe] and direction != 'up':
             #print('new direction is up, '+str(datetime.fromtimestamp(time[i])))
             direction = 'up'
             markersup.append(i)
-        if hullma[i] < hullma[i - smoothe] and direction != 'down':
+        if tema[i] < tema[i - smoothe] and direction != 'down':
             #print('new direction is down, '+str(datetime.fromtimestamp(time[i])))
             direction = 'down'
             markersdown.append(i)
     
-    if hullma[length] >= hullma[length - smoothe] and direction != 'up':
+    if tema[length] >= tema[length - smoothe] and direction != 'up':
         return('new direction is up, '+sym+', '+tframe[5:]+' '+str(datetime.fromtimestamp(time[length])))
-    if hullma[length] < hullma[length - smoothe] and direction != 'down':
+    if tema[length] < tema[length - smoothe] and direction != 'down':
         return('new direction is down, '+sym+', '+tframe[5:]+', '+str(datetime.fromtimestamp(time[length])))
     return False
     '''
     plt.plot(df.close, label=sym+' Price')
-    plt.plot(hullma,marker=7, markevery=markersdown)
-    plt.plot(hullma,marker=6, markevery=markersup)
+    plt.plot(tema,marker=7, markevery=markersdown)
+    plt.plot(tema,marker=6, markevery=markersup)
     plt.legend(loc='upper left')
     plt.show()
     '''
