@@ -97,3 +97,4 @@ def mm_job(sym, tframe):
     plt.show()
     '''
 
+#mm_job('BTC', 'histohour')
