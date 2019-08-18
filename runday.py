@@ -1,26 +1,35 @@
 from mas_only import *
 from mm import *
+from send import telegram_bot_sendtext
+from fetch import fetch_data
 
 def runday():
-    #simple
-    v = job('BTC', 'histoday')
+    print('runday')
+    data = fetch_data(1000, 'histoday', 'BTC')
+    v = ma_job('BTC', 'histoday', data)
     if v:
         telegram_bot_sendtext(v)
-    v = job('XRP', 'histoday')
+    
+    v = mm_job('BTC', 'histoday', data)
     if v:
         telegram_bot_sendtext(v)
-    v = job('ETH', 'histoday')
+    
+    data = fetch_data(1000, 'histoday', 'XRP')
+    v = ma_job('XRP', 'histoday', data)
     if v:
         telegram_bot_sendtext(v)
-    #ultimate
-    v = mm_job('BTC', 'histoday')
+    
+    v = mm_job('XRP', 'histoday', data)
     if v:
-        mm_telegram_bot_sendtext(v)
-    v = mm_job('XRP', 'histoday')
+        telegram_bot_sendtext(v)
+    
+    data = fetch_data(1000, 'histoday', 'ETH')
+    v = ma_job('ETH', 'histoday', data)
     if v:
-        mm_telegram_bot_sendtext(v)
-    v = mm_job('ETH', 'histoday')
+        telegram_bot_sendtext(v)
+    
+    v = mm_job('ETH', 'histoday', data)
     if v:
-        mm_telegram_bot_sendtext(v)
+        telegram_bot_sendtext(v)
 
 runday()

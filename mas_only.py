@@ -1,49 +1,21 @@
 # script to calculate ultimate MA indicator and then report results to telegram
 
-import math, time
-import requests
+import math
 import pandas as pd
 import numpy as np
 from datetime import datetime
 import matplotlib.pyplot as plt
 
-def telegram_bot_sendtext(bot_message):
-    
-    bot_token = '832441474:AAGeWzau9CZxInYkFmislgmnrK0vj8GzNGw'
-    chat_id = '-1001407136445'
-    send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + chat_id + '&parse_mode=Markdown&text=' + bot_message
-    
-    response = requests.get(send_text)
-    
-    return response.json()
-
-
-#request data from crypto compare
-# t= histohour
-# t = histoday
-def fetch_data(length, time, sym):
-    #only use volumeto (dollars)
-    length = str(length)
-    api_uri = 'https://min-api.cryptocompare.com/data/'+time+'?fsym='+sym+'&tsym=USD&limit='+length+'&e=Kraken&api_key=fa05711eb31df6703c13a4672a8e84b65948dcb2f142a1f81b0c23b3dee57603'
-    
-    d = requests.get(api_uri).json()['Data']
-
-    volume = []
-    close = []
-    time = []
-    for entry in d:
-        volume.append(entry['volumeto'])
-        close.append(entry['close'])
-        time.append(entry['time'])
-    return volume, close, time
+from fetch import convert
 
 #full analysis method
-def job(sym, tframe):
+def ma_job(sym, tframe, data):
     #get data
     length= 1000
-    volume, close, time = fetch_data(length, tframe,sym)
-    data = {'close': close}
+    volume, close, open, time = convert(data)
+    data = {'date': time, 'close': close, 'open': open, 'volume': volume}
     df = pd.DataFrame(data)
+    df.columns = ['date', 'close', 'open', 'volume']
     
     ma50 = df.close.rolling(window=50).mean()
     ma99 = df.close.rolling(window=99).mean()
@@ -84,8 +56,6 @@ def job(sym, tframe):
             #print(crossings['bear'][-1], i)
             if i == length:
                 return crossings['bear'][-1]
-
-
 
     #print(crossings)
     '''

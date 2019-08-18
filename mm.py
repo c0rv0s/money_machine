@@ -1,53 +1,23 @@
 # script to calculate ultimate MA indicator and then report results to telegram
 
-import math, time
-import requests
+import math
 import pandas as pd
 import numpy as np
 from datetime import datetime
 import matplotlib.pyplot as plt
+
+from fetch import convert
 
 #globals
 len1 = 20
 a=0.7
 smoothe = 2 #1 to 10
 
-def mm_telegram_bot_sendtext(bot_message):
-    
-    bot_token = '832441474:AAGeWzau9CZxInYkFmislgmnrK0vj8GzNGw'
-    chat_id = '-1001407136445'
-    send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + chat_id + '&parse_mode=Markdown&text=' + bot_message
-    
-    response = requests.get(send_text)
-    
-    return response.json()
-
-#request data from crypto compare
-# t= histohour
-# t = histoday
-def mm_fetch_data(length, time, sym):
-    #only use volumeto (dollars)
-    length = str(length)
-    api_uri = 'https://min-api.cryptocompare.com/data/'+time+'?fsym='+sym+'&tsym=USD&limit='+length+'&e=Kraken&api_key=fa05711eb31df6703c13a4672a8e84b65948dcb2f142a1f81b0c23b3dee57603'
-    
-    d = requests.get(api_uri).json()['Data']
-
-    volume = []
-    close = []
-    open = []
-    time = []
-    for entry in d:
-        volume.append(entry['volumeto'])
-        close.append(entry['close'])
-        open.append(entry['open'])
-        time.append(entry['time'])
-    return volume, close, open, time
-
 #full analysis method
-def mm_job(sym, tframe):
+def mm_job(sym, tframe, data):
     #get data
     length= 1000
-    volume, close, open, time = mm_fetch_data(length, tframe,sym)
+    volume, close, open, time = convert(data)
     data = {'date': time, 'close': close, 'open': open, 'volume': volume}
     df = pd.DataFrame(data)
     df.columns = ['date', 'close', 'open', 'volume']
@@ -58,6 +28,7 @@ def mm_job(sym, tframe):
     ema3 = ema2.ewm(span=len1, adjust=False).mean()
     #triple ma
     tema = 3 * (ema1 - ema2) + ema3
+    '''
     #hull moving average
     hullma = ((2*(df.close.ewm(span=len1/2, adjust=False).mean()))-ema1).ewm(span=math.sqrt(len1), adjust=False).mean()
     #Tilson T3
@@ -69,7 +40,7 @@ def mm_job(sym, tframe):
     c3 = -6 * a ** (2) - 3 * a - 3 * a ** (3)
     c4 = 1 + 3 * a + a ** (3) + 3 * a ** (2)
     tilT3 = c1*ema6 + c2*ema5 + c3*ema4 + c4*ema3
-    
+    '''
     #we are going to use the tema
     direction = 'none'
     markersup = []
@@ -83,12 +54,12 @@ def mm_job(sym, tframe):
             #print('new direction is down, '+str(datetime.fromtimestamp(time[i])))
             direction = 'down'
             markersdown.append(i)
-    
+
     if tema[length] >= tema[length - smoothe] and direction != 'up':
         return('new direction is up, '+sym+', '+tframe[5:]+' '+str(datetime.fromtimestamp(time[length])))
     if tema[length] < tema[length - smoothe] and direction != 'down':
         return('new direction is down, '+sym+', '+tframe[5:]+', '+str(datetime.fromtimestamp(time[length])))
-    return False
+
     '''
     plt.plot(df.close, label=sym+' Price')
     plt.plot(tema,marker=7, markevery=markersdown)
@@ -96,5 +67,4 @@ def mm_job(sym, tframe):
     plt.legend(loc='upper left')
     plt.show()
     '''
-
-#mm_job('BTC', 'histohour')
+    return False
