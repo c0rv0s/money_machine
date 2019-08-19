@@ -6,7 +6,7 @@ import numpy as np
 from datetime import datetime
 import matplotlib.pyplot as plt
 
-from fetch import convert
+from utils import convert
 
 #globals
 len1 = 20
@@ -61,6 +61,7 @@ def mm_job(sym, tframe, data):
         return('new direction is down, '+sym+', '+tframe[5:]+', '+str(datetime.fromtimestamp(time[length])))
 
     '''
+    #this is kinda messed up in current version
     plt.plot(df.close, label=sym+' Price')
     plt.plot(tema,marker=7, markevery=markersdown)
     plt.plot(tema,marker=6, markevery=markersup)

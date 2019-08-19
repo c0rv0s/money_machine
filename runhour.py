@@ -1,7 +1,6 @@
 from mas_only import *
 from mm import *
-from send import telegram_bot_sendtext
-from fetch import fetch_data
+from utils import *
 
 def runhour():
     print('runhour')
