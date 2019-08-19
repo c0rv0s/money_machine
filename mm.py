@@ -56,9 +56,9 @@ def mm_job(sym, tframe, data):
             markersdown.append(i)
 
     if tema[length] >= tema[length - smoothe] and direction != 'up':
-        return('new direction is up, '+sym+', '+tframe[5:]+' '+str(datetime.fromtimestamp(time[length])))
+        return('new direction is up, *'+sym+'*, '+tframe[5:]+' '+str(datetime.fromtimestamp(time[length])))
     if tema[length] < tema[length - smoothe] and direction != 'down':
-        return('new direction is down, '+sym+', '+tframe[5:]+', '+str(datetime.fromtimestamp(time[length])))
+        return('new direction is down, *'+sym+'*, '+tframe[5:]+', '+str(datetime.fromtimestamp(time[length])))
 
     '''
     #this is kinda messed up in current version
