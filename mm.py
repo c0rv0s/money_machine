@@ -11,7 +11,7 @@ from utils import convert
 #globals
 len1 = 20
 a=0.7
-smoothe = 2 #1 to 10
+smoothe = 1 #1 to 10
 
 #full analysis method
 def mm_job(sym, tframe, data):
@@ -28,9 +28,10 @@ def mm_job(sym, tframe, data):
     ema3 = ema2.ewm(span=len1, adjust=False).mean()
     #triple ma
     tema = 3 * (ema1 - ema2) + ema3
-    '''
+    
     #hull moving average
     hullma = ((2*(df.close.ewm(span=len1/2, adjust=False).mean()))-ema1).ewm(span=math.sqrt(len1), adjust=False).mean()
+    '''
     #Tilson T3
     ema4 = ema3.ewm(span=len1, adjust=False).mean()
     ema5 = ema4.ewm(span=len1, adjust=False).mean()
@@ -41,16 +42,16 @@ def mm_job(sym, tframe, data):
     c4 = 1 + 3 * a + a ** (3) + 3 * a ** (2)
     tilT3 = c1*ema6 + c2*ema5 + c3*ema4 + c4*ema3
     '''
-    #we are going to use the tema
+    #we are going to use the hullma
     direction = 'none'
     markersup = []
     markersdown = []
     for i in range(smoothe,length):
-        if tema[i] >= tema[i - smoothe] and direction != 'up':
+        if hullma[i] >= hullma[i - smoothe] and direction != 'up':
             #print('new direction is up, '+str(datetime.fromtimestamp(time[i])))
             direction = 'up'
             markersup.append(i)
-        if tema[i] < tema[i - smoothe] and direction != 'down':
+        if hullma[i] < hullma[i - smoothe] and direction != 'down':
             #print('new direction is down, '+str(datetime.fromtimestamp(time[i])))
             direction = 'down'
             markersdown.append(i)
