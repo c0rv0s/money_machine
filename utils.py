@@ -47,9 +47,10 @@ def get_bal():
     message = bytes(param_str, 'utf-8')
     secret = bytes(private_key, 'utf-8')
 
-    sign = base64.b64encode(hmac.new(secret, message, digestmod=hashlib.sha256).digest())
+    sign = hmac.new(secret, message, digestmod=hashlib.sha256).digest().hex()
     
-    p = url + '?' + param_str + '&sign=' + sign.hex()
+    p = url + '?' + param_str + '&sign=' + sign
+    print(p)
     response = requests.get(p).json()
     print(response)
 
