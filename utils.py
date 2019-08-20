@@ -1,4 +1,8 @@
 import requests
+import hashlib
+import hmac
+import base64
+import time
 from tokens import *
 
 def telegram_bot_sendtext(bot_message):
@@ -31,3 +35,28 @@ def fetch_data(length, time, sym):
     d = requests.get(api_uri).json()['Data']
 
     return d
+
+#bybit stuff
+def timestamp():
+    return int(round(time.time() * 1000))
+
+def get_bal():
+    url = 'https://api.bybit.com/position/list'
+    param_str = 'api_key=' + api_key + '&timestamp=' + str(timestamp())
+    
+    message = bytes(param_str, 'utf-8')
+    secret = bytes(private_key, 'utf-8')
+
+    sign = base64.b64encode(hmac.new(secret, message, digestmod=hashlib.sha256).digest())
+    
+    p = url + '?' + param_str + '&sign=' + sign.hex()
+    response = requests.get(p).json()
+    print(response)
+
+def open_order():
+    url = 'https://api.bybit.com/open-api/order/create'
+    side = 'side=Buy'
+    symbol = 'symbol=BTCUSD'
+    order_type = 'order_type=Market'
+
+

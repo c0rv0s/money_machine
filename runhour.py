@@ -5,30 +5,30 @@ from utils import *
 def runhour():
     print('runhour')
     data = fetch_data(1000, 'histohour', 'BTC')
-    v = ma_job('BTC', 'histohour', data)
-    if v:
-        telegram_bot_sendtext(v)
+    signal = ma_job('BTC', 'histohour', data)
+    if signal:
+        telegram_bot_sendtext(signal)
 
-    v = mm_job('BTC', 'histohour', data)
-    if v:
-        telegram_bot_sendtext(v)
+    signal = mm_job('BTC', 'histohour', data)
+    if signal:
+        telegram_bot_sendtext('BTC trend '+signal)
 
     data = fetch_data(1000, 'histohour', 'XRP')
-    v = ma_job('XRP', 'histohour', data)
-    if v:
-        telegram_bot_sendtext(v)
+    signal = ma_job('XRP', 'histohour', data)
+    if signal:
+        telegram_bot_sendtext(signal)
     
-    v = mm_job('XRP', 'histohour', data)
-    if v:
-        telegram_bot_sendtext(v)
+    signal = mm_job('XRP', 'histohour', data)
+    if signal:
+        telegram_bot_sendtext('XRP trend '+signal)
 
     data = fetch_data(1000, 'histohour', 'ETH')
-    v = ma_job('ETH', 'histohour', data)
-    if v:
-        telegram_bot_sendtext(v)
+    signal = ma_job('ETH', 'histohour', data)
+    if signal:
+        telegram_bot_sendtext(signal)
     
-    v = mm_job('ETH', 'histohour', data)
-    if v:
-        telegram_bot_sendtext(v)
+    signal = mm_job('ETH', 'histohour', data)
+    if signal:
+        telegram_bot_sendtext('ETH trend '+signal)
 
 runhour()

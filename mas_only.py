@@ -59,7 +59,6 @@ def ma_job(sym, tframe, data):
 
     #print(crossings)
     '''
-    #this is kinda messed up in current version
     plt.plot(df.close, label=sym+' Price')
     plt.plot(ma50, label=sym+' 50 EMA')
     plt.plot(ma99, label=sym+' 99 EMA')
