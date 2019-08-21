@@ -54,8 +54,10 @@ def get_bal():
     return response['result'][0]
 
 def open_order(last_price):
+    leverage = 3.0
+    
     balance = get_bal()['wallet_balance']
-    usdbal = int( last_price*balance*0.95 )
+    usdbal = int( last_price*balance*0.9*leverage )
     url = 'https://api.bybit.com/open-api/order/create'
     side = 'side=Buy'
     symbol = 'symbol=BTCUSD'
