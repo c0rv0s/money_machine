@@ -2,12 +2,13 @@ from mm import *
 from utils import *
 
 print('runbot')
-data = fetch_data(100, 'histoday', 'BTC')
+data = fetch_data(1000, 'histoday', 'BTC')
 
 signal = mm_job('BTC', 'histoday', data)
 print(signal)
+last_price = float( data[-1]['close'] )
 
-get_bal()
+open_order(last_price)
 #go long and send a message to telegram
 if signal == 'up':
 #telegram_bot_sendtext('XBT: bot going long')

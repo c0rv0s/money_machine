@@ -50,14 +50,29 @@ def get_bal():
     sign = hmac.new(secret, message, digestmod=hashlib.sha256).digest().hex()
     
     p = url + '?' + param_str + '&sign=' + sign
-    print(p)
     response = requests.get(p).json()
-    print(response)
+    return response['result'][0]['wallet_balance']
 
-def open_order():
+def open_order(last_price):
+    balance = get_bal()
+    usdbal = int( last_price*balance*0.95 )
     url = 'https://api.bybit.com/open-api/order/create'
+    testurl = 'https://api-testnet.bybit.com/open-api/order/create'
     side = 'side=Buy'
     symbol = 'symbol=BTCUSD'
     order_type = 'order_type=Market'
+    qty = 'qty=1'
+    price = 'price='
+    time_in_force = 'time_in_force='
+    param_str = 'api_key=' + api_key + '&timestamp=' + str(timestamp()) + '&'+side+'&'+symbol+'&'+order_type+'&'+qty
 
+    message = bytes(param_str, 'utf-8')
+    secret = bytes(private_key, 'utf-8')
+
+    sign = hmac.new(secret, message, digestmod=hashlib.sha256).digest().hex()
+
+    p = url + '?' + param_str + '&sign=' + sign
+    print(p)
+    response = requests.get(p).json()
+    print(response)
 
