@@ -18,10 +18,10 @@ if signal == 'up':
 
 #the other thing
 if signal == 'down':
-    o = close_position()
+    o, bal = close_position()
 
     if o == 0:
-        telegram_bot_sendtext('XBT: bot closing long, standing by for next entry')
+        telegram_bot_sendtext('XBT: bot closing long, standing by for next entry, current balance is ' + str(bal))
     else:
-        telegram_bot_sendtext('XBT: up trend over, bot failed to close position')
+        telegram_bot_sendtext('XBT: up trend over, bot failed to close position, current balance is ' + str(bal)')
 

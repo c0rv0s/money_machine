@@ -93,36 +93,7 @@ def close_position():
     
     p = url + '?' + param_str + '&sign=' + sign
     response = requests.post(p).json()
-    return response['ret_code']
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-'''
-    # data to be sent to api
-    data = {'api_key':api_key,
-    'time_in_force':'',
-    'price': '',
-    'qty':'1.0',
-    'order_type': 'Market',
-    'symbol': 'BTCUSD',
-    'side': 'Buy',
-    'timestamp': tmstp,
-    'sign': sign}
     
-    # sending post request and saving response as response object
-    response = requests.post(url = url, data = data)
-'''
+    time.sleep(5)
+    balance = get_bal()['wallet_balance']
+    return response['ret_code'], balance
