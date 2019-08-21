@@ -8,13 +8,20 @@ signal = mm_job('BTC', 'histoday', data)
 print(signal)
 last_price = float( data[-1]['close'] )
 
-open_order(last_price)
 #go long and send a message to telegram
 if signal == 'up':
-#telegram_bot_sendtext('XBT: bot going long')
-    i=0
+    o = open_order(last_price)
+    if o == 0:
+        telegram_bot_sendtext('XBT: bot going long')
+    else:
+        telegram_bot_sendtext('XBT: up trend begin, bot failed to open long')
 
 #the other thing
 if signal == 'down':
-#telegram_bot_sendtext('XBT: bot closing long, standing by for next entry')
-    i=0
+    o = close_position()
+
+    if o == 0:
+        telegram_bot_sendtext('XBT: bot closing long, standing by for next entry')
+    else:
+        telegram_bot_sendtext('XBT: up trend over, bot failed to close position')
+

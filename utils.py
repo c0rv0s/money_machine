@@ -51,20 +51,19 @@ def get_bal():
     
     p = url + '?' + param_str + '&sign=' + sign
     response = requests.get(p).json()
-    return response['result'][0]['wallet_balance']
+    return response['result'][0]
 
 def open_order(last_price):
-    balance = get_bal()
+    balance = get_bal()['wallet_balance']
     usdbal = int( last_price*balance*0.95 )
     url = 'https://api.bybit.com/open-api/order/create'
-    testurl = 'https://api-testnet.bybit.com/open-api/order/create'
     side = 'side=Buy'
     symbol = 'symbol=BTCUSD'
     order_type = 'order_type=Market'
-    qty = 'qty=1'
+    qty = 'qty='+str(usdbal)
     price = 'price='
     time_in_force = 'time_in_force='
-    param_str = 'api_key=' + api_key + '&timestamp=' + str(timestamp()) + '&'+side+'&'+symbol+'&'+order_type+'&'+qty
+    param_str = 'api_key='+api_key+'&'+order_type+'&'+price+'&'+qty+'&'+side+'&'+symbol+'&'+time_in_force+'&timestamp='+str(timestamp())
 
     message = bytes(param_str, 'utf-8')
     secret = bytes(private_key, 'utf-8')
@@ -72,7 +71,58 @@ def open_order(last_price):
     sign = hmac.new(secret, message, digestmod=hashlib.sha256).digest().hex()
 
     p = url + '?' + param_str + '&sign=' + sign
-    print(p)
-    response = requests.get(p).json()
-    print(response)
+    response = requests.post(p).json()
+    return response['ret_code']
 
+def close_position():
+    openp = get_bal()['size']
+
+    url = 'https://api.bybit.com/open-api/order/create'
+    side = 'side=Sell'
+    symbol = 'symbol=BTCUSD'
+    order_type = 'order_type=Market'
+    qty = 'qty='+str(openp)
+    price = 'price='
+    time_in_force = 'time_in_force='
+    param_str = 'api_key='+api_key+'&'+order_type+'&'+price+'&'+qty+'&'+side+'&'+symbol+'&'+time_in_force+'&timestamp='+str(timestamp())
+    
+    message = bytes(param_str, 'utf-8')
+    secret = bytes(private_key, 'utf-8')
+    
+    sign = hmac.new(secret, message, digestmod=hashlib.sha256).digest().hex()
+    
+    p = url + '?' + param_str + '&sign=' + sign
+    response = requests.post(p).json()
+    return response['ret_code']
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
+    # data to be sent to api
+    data = {'api_key':api_key,
+    'time_in_force':'',
+    'price': '',
+    'qty':'1.0',
+    'order_type': 'Market',
+    'symbol': 'BTCUSD',
+    'side': 'Buy',
+    'timestamp': tmstp,
+    'sign': sign}
+    
+    # sending post request and saving response as response object
+    response = requests.post(url = url, data = data)
+'''
