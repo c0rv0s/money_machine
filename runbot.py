@@ -18,8 +18,9 @@ if signal == 'up':
 
 #the other thing
 if signal == 'down':
-    o, bal = close_position()
-
+    o = close_position()
+    bal = get_bal()['wallet_balance']
+    
     if o == 0:
         telegram_bot_sendtext('XBT: bot closing long, standing by for next entry, current balance is ' + str(bal))
     else:

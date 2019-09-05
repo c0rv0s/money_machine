@@ -96,6 +96,5 @@ def close_position():
     p = url + '?' + param_str + '&sign=' + sign
     response = requests.post(p).json()
     
-    time.sleep(5)
-    balance = get_bal()['wallet_balance']
-    return response['ret_code'], balance
+    
+    return response['ret_code']
