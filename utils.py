@@ -74,7 +74,7 @@ def open_order(last_price):
 
     p = url + '?' + param_str + '&sign=' + sign
     response = requests.post(p).json()
-    return response['ret_code']
+    return response
 
 def close_position():
     openp = get_bal()['size']
@@ -97,4 +97,4 @@ def close_position():
     response = requests.post(p).json()
     
     
-    return response['ret_code']
+    return response
