@@ -16,7 +16,7 @@ smoothe = 1 #1 to 10
 #full analysis method
 def mm_job(sym, tframe, data):
     #get data
-    length= len(data)-1
+    length= len(data)
     volume, close, open, time = convert(data)
     data = {'date': time, 'close': close, 'open': open, 'volume': volume}
     df = pd.DataFrame(data)
@@ -28,7 +28,7 @@ def mm_job(sym, tframe, data):
     ema3 = ema2.ewm(span=len1, adjust=False).mean()
     #triple ma
     tema = 3 * (ema1 - ema2) + ema3
-    
+
     #hull moving average
     hullma = ((2*(df.close.ewm(span=len1/2, adjust=False).mean()))-ema1).ewm(span=math.sqrt(len1), adjust=False).mean()
     '''
@@ -51,10 +51,13 @@ def mm_job(sym, tframe, data):
     vals = []
     #we are going to use the hullma
     direction = 'none'
-    for i in range(smoothe,length+1):
+    change = False
+    for i in range(smoothe,length):
+        change = False
         if hullma[i] >= hullma[i - smoothe] and direction != 'up':
             #print('new direction is up, '+str(datetime.fromtimestamp(time[i]))+' '+str(close[i]))
             direction = 'up'
+            change = True
             '''
             if trade:
                 amount = (balance * (topen / close[i])) - balance
@@ -63,11 +66,10 @@ def mm_job(sym, tframe, data):
             topen = close[i]
             trade = True
             '''
-            if i == length:
-                return direction
         if hullma[i] < hullma[i - smoothe] and direction != 'down':
             #print('new direction is down, '+str(datetime.fromtimestamp(time[i]))+' '+str(close[i]))
             direction = 'down'
+            change = True
             '''
             if trade:
                 amount = (balance * (close[i])/topen) - balance
@@ -76,11 +78,11 @@ def mm_job(sym, tframe, data):
             topen = close[i]
             trade = True
             '''
-            if i == length:
-                return direction
         #vals.append(balance)
-
+                
     #plt.plot(vals)
     #plt.show()
-
-    return False
+    if change:
+        return direction
+    else:
+        return False
