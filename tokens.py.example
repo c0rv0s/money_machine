@@ -1,0 +1,7 @@
+bot_token = 'telegram bot token'
+chat_id = 'telegram chat id'
+key = 'cryptocompare key for getting price data'
+
+api_key = 'bybit api key'
+private_key = 'bybit private api key'
+
