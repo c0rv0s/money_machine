@@ -20,7 +20,7 @@ elif signal == 'up':
     if o['ret_code'] == 0:
         telegram_bot_sendtext('XBT: bot going long')
     else:
-        telegram_bot_sendtext('XBT: bot failed to open long error report: ' + str(o))
+        telegram_bot_sendtext('XBT: bot failed to open long, error code: '+str(o['ret_code'])+' error msg: '+str(o['ret_msg']))
 
 #the other thing
 elif signal == 'down':
@@ -31,6 +31,5 @@ elif signal == 'down':
     if o['ret_code'] == 0:
         telegram_bot_sendtext('XBT: bot closing long, standing by for next entry, current balance is ' + str(bal))
     else:
-        telegram_bot_sendtext('XBT: up trend over, bot failed to close position, current balance is ' + str(bal)+' error report: '+str(o))
-
+        telegram_bot_sendtext('XBT: bot failed to close position, current balance is ' + str(bal)+' error code: '+str(o['ret_code'])+' error msg: '+str(o['ret_msg']))
 
