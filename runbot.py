@@ -8,14 +8,14 @@ signal = mm_job('BTC', 'histoday', data)
 print('Signal: ' + str(signal))
 
 last_price = float( data[-1]['close'] )
-print('last price: '+str(last_price))
+print('last price: $'+str(last_price))
 
 if signal == False:
-    telegram_bot_sendtext('no change, last price: ' + str(last_price))
+    telegram_bot_sendtext('no change, last price: $' + str(last_price))
 
 #go long and send a message to telegram
 elif signal == 'up':
-    telegram_bot_sendtext('XBT: new trend is up, last price: ' + str(last_price))
+    telegram_bot_sendtext('XBT: new trend is up, last price: $' + str(last_price))
     o = open_order(last_price)
     if o['ret_code'] == 0:
         telegram_bot_sendtext('XBT: bot going long')
@@ -24,7 +24,7 @@ elif signal == 'up':
 
 #the other thing
 elif signal == 'down':
-    telegram_bot_sendtext('XBT: new trend is down, last price: ' + str(last_price))
+    telegram_bot_sendtext('XBT: new trend is down, last price: $' + str(last_price))
     o = close_position()
     bal = get_bal()['wallet_balance']
     
