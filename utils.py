@@ -3,7 +3,21 @@ import hashlib
 import hmac
 import base64
 import time
+from datetime import datetime
+import os
 from tokens import *
+
+def log_error(error):
+    filename = 'error_log.txt'
+
+    if os.path.exists(filename):
+        append_write = 'a' # append if already exists
+    else:
+        append_write = 'w' # make a new file if not
+
+    efile = open(filename,append_write)
+    efile.write(str(datetime.now())+": "+str(error) + "\n")
+    efile.close()
 
 def telegram_bot_sendtext(bot_message):
     

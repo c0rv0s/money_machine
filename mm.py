@@ -4,7 +4,7 @@ import math
 import pandas as pd
 import numpy as np
 from datetime import datetime
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 from utils import convert
 
@@ -55,10 +55,12 @@ def mm_job(sym, tframe, data):
     for i in range(smoothe,length):
         change = False
         if hullma[i] >= hullma[i - smoothe] and direction != 'up':
-            #print('new direction is up, '+str(datetime.fromtimestamp(time[i]))+' '+str(close[i]))
             direction = 'up'
             change = True
             '''
+            if i > 900:
+                print('new direction is up, '+str(datetime.fromtimestamp(time[i]))+' $'+str(close[i]))
+            
             if trade:
                 amount = (balance * (topen / close[i])) - balance
                 balance += (amount*leverage)*0.9974
@@ -67,10 +69,12 @@ def mm_job(sym, tframe, data):
             trade = True
             '''
         if hullma[i] < hullma[i - smoothe] and direction != 'down':
-            #print('new direction is down, '+str(datetime.fromtimestamp(time[i]))+' '+str(close[i]))
             direction = 'down'
             change = True
             '''
+            if i > 900:
+                print('new direction is down, '+str(datetime.fromtimestamp(time[i]))+' $'+str(close[i]))
+            
             if trade:
                 amount = (balance * (close[i])/topen) - balance
                 balance += (amount*leverage)*0.9974
@@ -79,6 +83,8 @@ def mm_job(sym, tframe, data):
             trade = True
             '''
         #vals.append(balance)
+        #if i > 990:
+            #print(hullma[i])
                 
     #plt.plot(vals)
     #plt.show()
