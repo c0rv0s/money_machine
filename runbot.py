@@ -1,38 +1,47 @@
 from mm import *
 from utils import *
+import sys
 
-print('runbot')
-data = fetch_data(1000, 'histoday', 'BTC')
+def main():
+    print('runbot')
+    data = fetch_data(1000, 'histoday', 'BTC')
 
-signal = mm_job('BTC', 'histoday', data)
-print('Signal: ' + str(signal))
+    backtest = True if 'test' in sys.argv else False
+    longs = True if 'nolongs' not in sys.argv else False 
+    shorts = True if 'noshorts' not in sys.argv else False
 
-last_price = float( data[-1]['close'] )
-print('last price: $'+str(last_price))
+    signal = mm_job('BTC', 'histoday', data, backtest, shorts, longs)
+    print('Signal: ' + str(signal))
 
-if signal == False:
-    telegram_bot_sendtext('no change, last price: $' + str(last_price))
+    last_price = float( data[-1]['close'] )
+    print('last price: $'+str(last_price))
 
-#go long and send a message to telegram
-elif signal == 'up':
-    telegram_bot_sendtext('XBT: new trend is up, last price: $' + str(last_price))
-    o = open_order(last_price)
-    if o['ret_code'] == 0:
-        telegram_bot_sendtext('XBT: bot going long')
-    else:
-        telegram_bot_sendtext('XBT: bot failed to open long, error code: '+str(o['ret_code'])+' error msg: '+str(o['ret_msg']))
-        log_error(o)
+    if not backtest:
+        if signal == False:
+            telegram_bot_sendtext('no change, last price: $' + str(last_price))
 
-#the other thing
-elif signal == 'down':
-    telegram_bot_sendtext('XBT: new trend is down, last price: $' + str(last_price))
-    o = close_position()
-    bal = get_bal()['wallet_balance']
+        #go long and send a message to telegram
+        elif signal == 'up':
+            telegram_bot_sendtext('XBT: new trend is up, last price: $' + str(last_price))
+            o = open_order(last_price)
+            if o['ret_code'] == 0:
+                telegram_bot_sendtext('XBT: bot going long')
+            else:
+                telegram_bot_sendtext('XBT: bot failed to open long, error code: '+str(o['ret_code'])+' error msg: '+str(o['ret_msg']))
+                log_error(o)
 
-    if o['ret_code'] == 0:
-        telegram_bot_sendtext('XBT: bot closing long, standing by for next entry, current balance is ' + str(bal))
-    else:
-        telegram_bot_sendtext('XBT: bot failed to close position, current balance is ' + str(bal)+' error code: '+str(o['ret_code'])+' error msg: '+str(o['ret_msg']))
-        log_error(o)
+        #the other thing
+        elif signal == 'down':
+            telegram_bot_sendtext('XBT: new trend is down, last price: $' + str(last_price))
+            o = close_position()
+            bal = get_bal()['wallet_balance']
+
+            if o['ret_code'] == 0:
+                telegram_bot_sendtext('XBT: bot closing long, standing by for next entry, current balance is ' + str(bal))
+            else:
+                telegram_bot_sendtext('XBT: bot failed to close position, current balance is ' + str(bal)+' error code: '+str(o['ret_code'])+' error msg: '+str(o['ret_msg']))
+                log_error(o)
 
 
+if __name__ == "__main__":
+    main()

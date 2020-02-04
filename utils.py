@@ -6,6 +6,7 @@ import time
 from datetime import datetime
 import os
 from tokens import *
+from config import *
 
 def log_error(error):
     filename = 'error_log.txt'
@@ -20,11 +21,8 @@ def log_error(error):
     efile.close()
 
 def telegram_bot_sendtext(bot_message):
-    
     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + chat_id + '&parse_mode=Markdown&text=' + bot_message
-    
     response = requests.get(send_text)
-    
     return response.json()
 
 def convert(d):
@@ -40,15 +38,10 @@ def convert(d):
     return volume, close, open, time
 
 #request data from crypto compare
-# t= histohour
-# t = histoday
 def fetch_data(length, time, sym):
     length = str(length)
     api_uri = 'https://min-api.cryptocompare.com/data/'+time+'?fsym='+sym+'&tsym=USD&limit='+length+'&e=Bitstamp&api_key='+key
-    
-    d = requests.get(api_uri).json()['Data']
-
-    return d
+    return requests.get(api_uri).json()['Data']
 
 #bybit stuff
 def timestamp():
@@ -68,10 +61,8 @@ def get_bal():
     return response['result'][0]
 
 def open_order(last_price):
-    leverage = 3.0
-    
     balance = get_bal()['wallet_balance']
-    usdbal = int( last_price*balance*0.9*leverage )
+    usdbal = int( last_price*balance*amountOfFunds*leverage )
     url = 'https://api.bybit.com/open-api/order/create'
     side = 'side=Buy'
     symbol = 'symbol=BTCUSD'
