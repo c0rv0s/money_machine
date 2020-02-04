@@ -5,7 +5,8 @@ be sure to use python 3
 
 ### runbot:
 uses the code in mm.py to calculate signals, then will execute orders as appropriate. whenever an action is performed then a status message will be sent via telegram bot with status. 
-default setting is:
+
+Default setting is:
 - open orders with 3x leverage and 90% of available funds (configured in config.py)
 - close the entire order at once
 - only market orders
