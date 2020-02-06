@@ -26,4 +26,4 @@ Returns crossing of moving averages
 Returns trend changes (up or down or no change) as determined by Hull Moving Average and smoothe factor.
 
 ## chat:
-On linux run ```nohup \path\to\chat.py &``` to run the it in the background for balance queries on demand
+On linux run ```nohup python3 \path\to\chat.py &``` to run the it in the background for balance queries on demand
