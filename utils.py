@@ -3,6 +3,7 @@ import hashlib
 import hmac
 import base64
 import time
+import urllib
 from datetime import datetime
 import os
 from tokens import *
@@ -20,9 +21,19 @@ def log_error(error):
     efile.write(str(datetime.now())+": "+str(error) + "\n")
     efile.close()
 
-def telegram_bot_sendtext(bot_message):
+def telegram_bot_sendtext(bot_message, chat_id=None):
+    bot_message = urllib.parse.quote_plus(bot_message)
+    if not chat_id:
+        chat_id = channel_chat_id
     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + chat_id + '&parse_mode=Markdown&text=' + bot_message
     response = requests.get(send_text)
+    return response.json()
+
+def getUpdates(offset=None):
+    url = 'https://api.telegram.org/bot' + bot_token + '/getUpdates?timeout=100' 
+    if offset:
+        url += "&offset={}".format(offset)
+    response = requests.get(url)
     return response.json()
 
 def convert(d):
