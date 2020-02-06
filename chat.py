@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from utils import *
 import sys
 import time
@@ -21,19 +22,19 @@ def main():
                     responseMessage = ""
                     if bal['position_value']:
                         responseMessage = """
-                        Open position value (BTC): {}
-                        Entry price: ${}
-                        Unrealised Pnl (BTC): {}
-                        Wallet Balance (BTC): {}
-                        Unrealised Pnl ($$): {}
-                        Wallet Balance ($$): {}
-                        Current BTC Price: ${} 
+Open position value (BTC): {}
+Entry price: ${}
+Unrealised Pnl (BTC): {}
+Wallet Balance (BTC): {}
+Unrealised Pnl ($$): {}
+Wallet Balance ($$): {}
+Current BTC Price: ${} 
                         """.format(bal['position_value'], bal['entry_price'], bal['unrealised_pnl'], bal['wallet_balance'], last_price*float(bal['unrealised_pnl']), last_price*float(bal['wallet_balance']), last_price)
                     else:
                         responseMessage = """
-                        Wallet Balance (BTC): {}
-                        Wallet Balance ($$): {}
-                        Current BTC Price: ${} 
+Wallet Balance (BTC): {}
+Wallet Balance ($$): {}
+Current BTC Price: ${} 
                         """.format(bal['wallet_balance'], last_price*float(bal['wallet_balance']), last_price)
                     telegram_bot_sendtext(responseMessage, chat_id)
             if len(messages['result']) > 0:
