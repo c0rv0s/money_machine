@@ -36,7 +36,8 @@ def main():
                         Current BTC Price: ${} 
                         """.format(bal['wallet_balance'], last_price*float(bal['wallet_balance']), last_price)
                     telegram_bot_sendtext(responseMessage, chat_id)
-            lastUpdate = messages['result'][-1]['update_id'] + 1
+            if len(messages['result']) > 0:
+                lastUpdate = messages['result'][-1]['update_id'] + 1
             time.sleep(10)
         except :
             telegram_bot_sendtext("Error with chat")
