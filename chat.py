@@ -4,6 +4,9 @@ import time
 
 def main():
     lastUpdate = 331301188
+    messages = getUpdates(lastUpdate)
+    if len(messages['result']) > 0:
+        lastUpdate = messages['result'][-1]['update_id'] + 1
     while True:
         messages = getUpdates(lastUpdate)
         for message in messages['result']:
