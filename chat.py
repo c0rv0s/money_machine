@@ -47,7 +47,11 @@ Current BTC Price: ${}
                         telegram_bot_sendtext('XBT: bot failed to close position, current balance is ' + str(bal)+' error code: '+str(o['ret_code'])+' error msg: '+str(o['ret_msg']), chat_id)
                         log_error(o)
                 else:
-                    telegram_bot_sendtext("Unrecognized command.", chat_id)
+                    telegram_bot_sendtext("""
+These are the commands I recognize:
+Wallet or Balance: returns current balance and open positions
+Close: emergency command to close currently open position
+                    """, chat_id)
             if len(messages['result']) > 0:
                 lastUpdate = messages['result'][-1]['update_id'] + 1
             time.sleep(10)
