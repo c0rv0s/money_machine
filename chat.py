@@ -42,12 +42,12 @@ Current BTC Price: ${}
                     bal = get_bal()['wallet_balance']
 
                     if o['ret_code'] == 0:
-                        telegram_bot_sendtext('XBT: bot closing long, standing by for next entry, current balance is ' + str(bal))
+                        telegram_bot_sendtext('XBT: bot closing long, standing by for next entry, current balance is ' + str(bal), chat_id)
                     else:
-                        telegram_bot_sendtext('XBT: bot failed to close position, current balance is ' + str(bal)+' error code: '+str(o['ret_code'])+' error msg: '+str(o['ret_msg']))
+                        telegram_bot_sendtext('XBT: bot failed to close position, current balance is ' + str(bal)+' error code: '+str(o['ret_code'])+' error msg: '+str(o['ret_msg']), chat_id)
                         log_error(o)
                 else:
-                    telegram_bot_sendtext("Unrecognized command.")
+                    telegram_bot_sendtext("Unrecognized command.", chat_id)
             if len(messages['result']) > 0:
                 lastUpdate = messages['result'][-1]['update_id'] + 1
             time.sleep(10)
