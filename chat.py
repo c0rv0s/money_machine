@@ -37,6 +37,15 @@ Wallet Balance ($$): {}
 Current BTC Price: ${} 
                         """.format(bal['wallet_balance'], last_price*float(bal['wallet_balance']), last_price)
                     telegram_bot_sendtext(responseMessage, chat_id)
+                if command == "Close":
+                    o = close_position()
+                    bal = get_bal()['wallet_balance']
+
+                    if o['ret_code'] == 0:
+                        telegram_bot_sendtext('XBT: bot closing long, standing by for next entry, current balance is ' + str(bal))
+                    else:
+                        telegram_bot_sendtext('XBT: bot failed to close position, current balance is ' + str(bal)+' error code: '+str(o['ret_code'])+' error msg: '+str(o['ret_msg']))
+                        log_error(o)
             if len(messages['result']) > 0:
                 lastUpdate = messages['result'][-1]['update_id'] + 1
             time.sleep(10)
