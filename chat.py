@@ -37,7 +37,7 @@ Wallet Balance ($$): {}
 Current BTC Price: ${} 
                         """.format(bal['wallet_balance'], last_price*float(bal['wallet_balance']), last_price)
                     telegram_bot_sendtext(responseMessage, chat_id)
-                if command == "close":
+                elif command == "close":
                     o = close_position()
                     bal = get_bal()['wallet_balance']
 
