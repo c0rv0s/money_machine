@@ -46,6 +46,8 @@ Current BTC Price: ${}
                     else:
                         telegram_bot_sendtext('XBT: bot failed to close position, current balance is ' + str(bal)+' error code: '+str(o['ret_code'])+' error msg: '+str(o['ret_msg']))
                         log_error(o)
+                else:
+                    telegram_bot_sendtext("Unrecognized command.")
             if len(messages['result']) > 0:
                 lastUpdate = messages['result'][-1]['update_id'] + 1
             time.sleep(10)
