@@ -19,7 +19,7 @@ def main():
 
     if not backtest:
         if signal == False:
-            telegram_bot_sendtext('no change, last price: $' + str(last_price))
+            telegram_bot_sendtext('no change, '+ticker+' last price: $' + str(last_price))
 
         #go long and send a message to telegram
         elif signal == 'up':
