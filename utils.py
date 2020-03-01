@@ -76,7 +76,7 @@ def open_order(last_price):
     usdbal = int( last_price*balance*amountOfFunds*leverage )
     url = 'https://api.bybit.com/open-api/order/create'
     side = 'side=Buy'
-    symbol = 'symbol=BTCUSD'
+    symbol = 'symbol='+ticker+'USD'
     order_type = 'order_type=Market'
     qty = 'qty='+str(usdbal)
     price = 'price='
@@ -97,7 +97,7 @@ def close_position():
 
     url = 'https://api.bybit.com/open-api/order/create'
     side = 'side=Sell'
-    symbol = 'symbol=BTCUSD'
+    symbol = 'symbol='+ticker+'USD'
     order_type = 'order_type=Market'
     qty = 'qty='+str(openp)
     price = 'price='
