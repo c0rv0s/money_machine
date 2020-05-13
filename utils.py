@@ -71,11 +71,11 @@ def get_bal():
     response = requests.get(p).json()
     return response['result'][0]
 
-def open_order(last_price):
+def open_order(last_price, side='Buy'):
     balance = get_bal()['wallet_balance']
     usdbal = int( last_price*balance*amountOfFunds*leverage )
     url = 'https://api.bybit.com/open-api/order/create'
-    side = 'side=Buy'
+    side = 'side=' + side
     symbol = 'symbol='+ticker+'USD'
     order_type = 'order_type=Market'
     qty = 'qty='+str(usdbal)
@@ -92,11 +92,11 @@ def open_order(last_price):
     response = requests.post(p).json()
     return response
 
-def close_position():
+def close_position(side='Sell'):
     openp = get_bal()['size']
 
     url = 'https://api.bybit.com/open-api/order/create'
-    side = 'side=Sell'
+    side = 'side=' + side
     symbol = 'symbol='+ticker+'USD'
     order_type = 'order_type=Market'
     qty = 'qty='+str(openp)
@@ -111,6 +111,4 @@ def close_position():
     
     p = url + '?' + param_str + '&sign=' + sign
     response = requests.post(p).json()
-    
-    
     return response
