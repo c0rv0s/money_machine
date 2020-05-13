@@ -9,6 +9,11 @@ import matplotlib.pyplot as plt
 from utils import convert
 from config import *
 
+def longLiq(entry, lev, maintMargenRate=0.005):
+    return entry*lev / (lev+1 - (maintMargenRate*lev))
+def shortLiq(entry, lev, maintMargenRate=0.005):
+    return entry*lev / (lev-1 + (maintMargenRate*lev))
+
 #full analysis method
 def mm_job(sym, tframe, data, backtest, shorts=True, longs=True):
     len1 = 20
@@ -37,6 +42,17 @@ def mm_job(sym, tframe, data, backtest, shorts=True, longs=True):
     change = False
     for i in range(smoothe,length):
         change = False
+
+        #liquidation calculator
+        if trade and backtest:
+            if direction == 'up':
+                if close[i] < longLiq(topen, leverage):
+                    print("LONG LIQUIDATED")
+            if direction == 'down':
+                if close[i] > shortLiq(topen, leverage):
+                    print("SHORT LIQUIDATED")
+
+        #direction change            
         if hullma[i] >= hullma[i - smoothe] and direction != 'up':
             direction = 'up'
             change = True
@@ -70,8 +86,8 @@ def mm_job(sym, tframe, data, backtest, shorts=True, longs=True):
         if backtest:
             vals.append(balance)
             if i > 990:
-                print(hullma[i])
-
+                print("close, hullma", close[i], hullma[i])
+            
     if backtest:        
         plt.plot(vals)
         plt.show()
