@@ -22,14 +22,14 @@ def main():
                     responseMessage = ""
                     if bal['position_value']:
                         responseMessage = """
-Open position value (BTC): {}
 Entry price: ${}
+Open position value (BTC): {}
 Unrealised Pnl (BTC): {}
-Wallet Balance (BTC): {}
 Unrealised Pnl ($$): {}
+Wallet Balance (BTC): {}
 Wallet Balance ($$): {}
 Current BTC Price: ${} 
-                        """.format(bal['position_value'], bal['entry_price'], bal['unrealised_pnl'], bal['wallet_balance'], last_price*float(bal['unrealised_pnl']), last_price*float(bal['wallet_balance']), last_price)
+                        """.format(bal['entry_price'], bal['position_value'], bal['unrealised_pnl'], last_price*float(bal['unrealised_pnl']), bal['wallet_balance'], last_price*float(bal['wallet_balance']), last_price)
                     else:
                         responseMessage = """
 Wallet Balance (BTC): {}
