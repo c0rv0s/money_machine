@@ -4,7 +4,7 @@ import sys
 import time
 
 def main():
-    lastUpdate = 331301188
+    lastUpdate = 331301319
     messages = getUpdates(lastUpdate)
     if len(messages['result']) > 0:
         lastUpdate = messages['result'][-1]['update_id'] + 1
@@ -54,9 +54,10 @@ Close: emergency command to close currently open position
                     """, chat_id)
             if len(messages['result']) > 0:
                 lastUpdate = messages['result'][-1]['update_id'] + 1
-            time.sleep(10)
+            time.sleep(6)
         except :
-            telegram_bot_sendtext("Error with chat")
+            telegram_bot_sendtext("Error with chat",chat_id)
+            break
 
 if __name__ == '__main__':
     main()
