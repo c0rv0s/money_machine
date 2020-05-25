@@ -2,6 +2,8 @@
 from utils import *
 import sys
 import time
+from mm import *
+from config import *
 
 def main():
     lastUpdate = 331301319
@@ -15,7 +17,7 @@ def main():
             for message in messages['result']:
                 command = message['message']['text'].lower()
                 chat_id = str(message['message']['chat']['id'])
-                if command == 'balance' or command == 'wallet':
+                if command == 'balance' or command == 'wallet' or command =='bal':
                     data = fetch_data(1, 'histoday', 'BTC')
                     last_price = float( data[-1]['close'] )
 
@@ -47,18 +49,23 @@ Current BTC Price: ${}
                     else:
                         telegram_bot_sendtext('XBT: bot failed to close position, current balance is ' + str(bal)+' error code: '+str(o['ret_code'])+' error msg: '+str(o['ret_msg']), chat_id)
                         log_error(o)
+                elif command == 'history' or command == 'hist':
+                    data = fetch_data(1000, 'histoday', ticker)
+                    historical = mm_job(ticker, 'histoday', data, False, False, True, True)
+                    telegram_bot_sendtext('\n'.join(historical),chat_id)
                 else:
                     telegram_bot_sendtext("""
 These are the commands I recognize:
-Wallet or Balance: returns current balance and open positions
+History or Hist: displays results of analysis for last ten days
+Balance or Bal: returns current balance and open positions
 Close: emergency command to close currently open position
                     """, chat_id)
             if len(messages['result']) > 0:
                 lastUpdate = messages['result'][-1]['update_id'] + 1
-            time.sleep(0.5)
+            time.sleep(1)
         except :
-            telegram_bot_sendtext("Error with chat",chat_id)
-            break
+            telegram_bot_sendtext("Error with chat, resetting in 30 seconds...",chat_id)
+            time.sleep(30)
 
 if __name__ == '__main__':
     main()

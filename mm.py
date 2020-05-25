@@ -15,7 +15,7 @@ def shortLiq(entry, lev, maintMargenRate=0.005):
     return entry*lev / (lev-1 + (maintMargenRate*lev))
 
 #full analysis method
-def mm_job(sym, tframe, data, backtest, shorts=True, longs=True):
+def mm_job(sym, tframe, data, backtest, shorts=True, longs=True, history=False):
     len1 = 20
     a=0.7
     smoothe = 1 #1 to 10
@@ -40,6 +40,8 @@ def mm_job(sym, tframe, data, backtest, shorts=True, longs=True):
     #we are going to use the hullma
     direction = 'none'
     change = False
+    #values for history
+    historical = []
     for i in range(smoothe,length):
         change = False
 
@@ -87,10 +89,14 @@ def mm_job(sym, tframe, data, backtest, shorts=True, longs=True):
             vals.append(balance)
             if i > 990:
                 print("close, hullma", close[i], hullma[i])
+        if history and i > 990:
+            historical.append('Price: '+str(close[i])+' '+ 'MA: ' + str(hullma[i]) + ' Direction: ' + direction)
             
     if backtest:        
         plt.plot(vals)
         plt.show()
+    if history:
+        return historical
     if change:
         return direction
     else:
