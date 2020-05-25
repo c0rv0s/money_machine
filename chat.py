@@ -9,7 +9,7 @@ def main():
     lastUpdate = 331301319
     messages = getUpdates(lastUpdate)
     if len(messages['result']) > 0:
-        lastUpdate = messages['result'][-1]['update_id'] + 1
+        lastUpdate = messages['result'][-1]['update_id']
     while True:
         print('getting updates')
         try:
