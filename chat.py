@@ -64,8 +64,8 @@ Close: emergency command to close currently open position
                 lastUpdate = messages['result'][-1]['update_id'] + 1
             time.sleep(1)
         except :
-            telegram_bot_sendtext("Error with chat, resetting in 30 seconds...",chat_id)
-            time.sleep(30)
+            telegram_bot_sendtext("Error with chat",chat_id)
+            break
 
 if __name__ == '__main__':
     main()
