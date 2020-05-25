@@ -9,6 +9,7 @@ def main():
     if len(messages['result']) > 0:
         lastUpdate = messages['result'][-1]['update_id'] + 1
     while True:
+        print('getting updates')
         try:
             messages = getUpdates(lastUpdate)
             for message in messages['result']:
@@ -54,7 +55,7 @@ Close: emergency command to close currently open position
                     """, chat_id)
             if len(messages['result']) > 0:
                 lastUpdate = messages['result'][-1]['update_id'] + 1
-            time.sleep(6)
+            time.sleep(0.5)
         except :
             telegram_bot_sendtext("Error with chat",chat_id)
             break

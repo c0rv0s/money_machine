@@ -30,7 +30,7 @@ def telegram_bot_sendtext(bot_message, chat_id=None):
     return response.json()
 
 def getUpdates(offset=None):
-    url = 'https://api.telegram.org/bot' + bot_token + '/getUpdates?timeout=100' 
+    url = 'https://api.telegram.org/bot' + bot_token + '/getUpdates?timeout=10000' 
     if offset:
         url += "&offset={}".format(offset)
     response = requests.get(url)
