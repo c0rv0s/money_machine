@@ -31,8 +31,9 @@ Unrealised Pnl (BTC): {}
 Unrealised Pnl ($$): {}
 Wallet Balance (BTC): {}
 Wallet Balance ($$): {}
+PnL: {}%
 Current BTC Price: ${} 
-                        """.format(bal['entry_price'], bal['position_value'], bal['unrealised_pnl'], last_price*float(bal['unrealised_pnl']), bal['wallet_balance'], last_price*float(bal['wallet_balance']), last_price)
+                        """.format(bal['entry_price'], bal['position_value'], bal['unrealised_pnl'], last_price*float(bal['unrealised_pnl']), bal['wallet_balance'], last_price*float(bal['wallet_balance']), 100*bal['unrealised_pnl']/bal['wallet_balance'], last_price)
                     else:
                         responseMessage = """
 Wallet Balance (BTC): {}
@@ -53,12 +54,15 @@ Current BTC Price: ${}
                     data = fetch_data(1000, 'histoday', ticker)
                     historical = mm_job(ticker, 'histoday', data, False, False, True, True)
                     telegram_bot_sendtext('\n'.join(historical),chat_id)
+                elif command == 'stock' or command == 's2f':
+                    telegram_bot_sendtext("This feature is still in development.")
                 else:
                     telegram_bot_sendtext("""
 These are the commands I recognize:
 History or Hist: displays results of analysis for last ten days
 Balance or Bal: returns current balance and open positions
 Close: emergency command to close currently open position
+Stock or s2f: shows an analysis of where bitcoin currently is on the Stock to Flow model
                     """, chat_id)
             if len(messages['result']) > 0:
                 lastUpdate = messages['result'][-1]['update_id'] + 1
