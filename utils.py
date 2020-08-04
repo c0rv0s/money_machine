@@ -21,6 +21,10 @@ def log_error(error):
     efile.write(str(datetime.now())+": "+str(error) + "\n")
     efile.close()
 
+def truncate(n, decimals=0):
+    multiplier = 10 ** decimals
+    return int(n * multiplier) / multiplier
+
 def telegram_bot_sendtext(bot_message, chat_id=None):
     bot_message = urllib.parse.quote_plus(bot_message)
     if not chat_id:
