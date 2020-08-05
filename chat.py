@@ -55,7 +55,7 @@ Current BTC Price: ${}
                     historical = mm_job(ticker, 'histoday', data, False, False, True, True)
                     telegram_bot_sendtext('\n'.join(historical),chat_id)
                 elif command == 'stock' or command == 's2f':
-                    telegram_bot_sendtext("This feature is still in development.")
+                    telegram_bot_sendtext("This feature is still in development.", chat_id)
                 else:
                     telegram_bot_sendtext("""
 These are the commands I recognize:
