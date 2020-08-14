@@ -15,9 +15,10 @@ Default setting is:
 To backtest the bot over the last 1000 days include 'test' in your command line options
 To test without shorting add 'noshorts'. To test without longs add 'nolongs'.
 
-### runday/runhour:
+### runmabot:
 If you only want signals then these are used to calculate signals with selected coins and message the bot with results.
-'test', 'noshorts' and 'nolongs' can be used as options here for testing
+```test```, ```noshorts``` and ```nolongs``` can be used as options here for testing.
+```hour``` or ```day``` can be passed to specifiy timeframe and ```btc```, ```eth``` and ```xrp``` will be accepted as ticker arguments. 
 
 ### mas_only:
 Returns crossing of moving averages
@@ -26,4 +27,4 @@ Returns crossing of moving averages
 Returns trend changes (up or down or no change) as determined by Hull Moving Average and smoothe factor.
 
 ## chat:
-On linux run ```nohup python3 \path\to\chat.py &``` to run the it in the background for balance queries on demand
+On linux run ```nohup python3 \path\to\chat.py &``` to run the chat server in the background for balance queries on demand

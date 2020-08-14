@@ -5,7 +5,7 @@ import sys
 
 def main():
     print('runbot')
-    data = fetch_data(1000, 'histoday', ticker)
+    data = convert(fetch_data(1000, 'histoday', ticker))
 
     backtest = True if 'test' in sys.argv else False
     longs = True if 'nolongs' not in sys.argv else False 
@@ -14,7 +14,7 @@ def main():
     signal = mm_job(ticker, 'histoday', data, backtest, shorts, longs)
     print('Signal: ' + str(signal))
 
-    last_price = float( data[-1]['close'] )
+    last_price = float( data['close'][-1] )
     print('last price: $'+str(last_price))
 
     if not backtest:

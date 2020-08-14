@@ -51,9 +51,9 @@ Current BTC Price: ${}
                         telegram_bot_sendtext('XBT: bot failed to close position, current balance is ' + str(bal)+' error code: '+str(o['ret_code'])+' error msg: '+str(o['ret_msg']), chat_id)
                         log_error(o)
                 elif command == 'history' or command == 'hist':
-                    data = fetch_data(1000, 'histoday', ticker)
+                    data = convert(fetch_data(1000, 'histoday', ticker))
                     historical = mm_job(ticker, 'histoday', data, False, False, True, True)
-                    telegram_bot_sendtext('\n'.join(historical),chat_id)
+                    telegram_bot_sendtext('\n'.join(historical), chat_id)
                 elif command == 'stock' or command == 's2f':
                     telegram_bot_sendtext("This feature is still in development.", chat_id)
                 else:

@@ -40,6 +40,7 @@ def getUpdates(offset=None):
     response = requests.get(url)
     return response.json()
 
+# formats data in columns
 def convert(d):
     volume = []
     close = []
@@ -50,7 +51,7 @@ def convert(d):
         close.append(entry['close'])
         open.append(entry['open'])
         time.append(entry['time'])
-    return volume, close, open, time
+    return {'date': time, 'close': close, 'open': open, 'volume': volume}
 
 #request data from crypto compare
 def fetch_data(length, time, sym):
