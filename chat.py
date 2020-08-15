@@ -50,6 +50,28 @@ Current BTC Price: ${}
                     else:
                         telegram_bot_sendtext('XBT: bot failed to close position, current balance is ' + str(bal)+' error code: '+str(o['ret_code'])+' error msg: '+str(o['ret_msg']), chat_id)
                         log_error(o)
+                elif command == "buy":
+                    bal = get_bal()
+                    if bal['position_value']:
+                        telegram_bot_sendtext('You already have an open position. Please close before opening a new one.', chat_id)
+                    else:
+                        o = open_order(last_price)
+                        if o['ret_code'] == 0:
+                            telegram_bot_sendtext(ticker + ': bot going long', chat_id)
+                        else:
+                            telegram_bot_sendtext(ticker + ': bot failed to open long, error code: '+str(o['ret_code'])+' error msg: '+str(o['ret_msg']), chat_id)
+                            log_error(o)
+                elif command == "sell":
+                    bal = get_bal()
+                    if bal['position_value']:
+                        telegram_bot_sendtext('You already have an open position. Please close before opening a new one.', chat_id)
+                    else:
+                        o = open_order(last_price, side='Sell')
+                        if o['ret_code'] == 0:
+                            telegram_bot_sendtext(ticker + ': bot going short', chat_id)
+                        else:
+                            telegram_bot_sendtext(ticker + ': bot failed to open short, error code: '+str(o['ret_code'])+' error msg: '+str(o['ret_msg']), chat_id)
+                            log_error(o)
                 elif command == 'history' or command == 'hist':
                     data = convert(fetch_data(1000, 'histoday', ticker))
                     historical = mm_job(ticker, 'histoday', data, False, False, True, True)
@@ -63,6 +85,8 @@ History or Hist: displays results of analysis for last ten days
 Balance or Bal: returns current balance and open positions
 Close: emergency command to close currently open position
 Stock or s2f: shows an analysis of where bitcoin currently is on the Stock to Flow model
+Buy: opens a long if there is no currently open position
+Sell: opens a short if there is no currently open position
                     """, chat_id)
             if len(messages['result']) > 0:
                 lastUpdate = messages['result'][-1]['update_id'] + 1

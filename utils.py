@@ -17,7 +17,7 @@ def log_error(error):
     else:
         append_write = 'w' # make a new file if not
 
-    efile = open(filename,append_write)
+    efile = open(filename, append_write)
     efile.write(str(datetime.now())+": "+str(error) + "\n")
     efile.close()
 
