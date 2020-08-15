@@ -50,7 +50,7 @@ Current BTC Price: ${}
                     else:
                         telegram_bot_sendtext('XBT: bot failed to close position, current balance is ' + str(bal)+' error code: '+str(o['ret_code'])+' error msg: '+str(o['ret_msg']), chat_id)
                         log_error(o)
-                elif command == "buy":
+                elif command == "long":
                     bal = get_bal()
                     if bal['position_value']:
                         telegram_bot_sendtext('You already have an open position. Please close before opening a new one.', chat_id)
@@ -61,7 +61,7 @@ Current BTC Price: ${}
                         else:
                             telegram_bot_sendtext(ticker + ': bot failed to open long, error code: '+str(o['ret_code'])+' error msg: '+str(o['ret_msg']), chat_id)
                             log_error(o)
-                elif command == "sell":
+                elif command == "short":
                     bal = get_bal()
                     if bal['position_value']:
                         telegram_bot_sendtext('You already have an open position. Please close before opening a new one.', chat_id)
@@ -85,8 +85,8 @@ History or Hist: displays results of analysis for last ten days
 Balance or Bal: returns current balance and open positions
 Close: emergency command to close currently open position
 Stock or s2f: shows an analysis of where bitcoin currently is on the Stock to Flow model
-Buy: opens a long if there is no currently open position
-Sell: opens a short if there is no currently open position
+Long: opens a long if there is no currently open position
+Short: opens a short if there is no currently open position
                     """, chat_id)
             if len(messages['result']) > 0:
                 lastUpdate = messages['result'][-1]['update_id'] + 1
