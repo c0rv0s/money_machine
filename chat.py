@@ -1,12 +1,30 @@
 #!/usr/bin/env python3
 from utils import *
-import sys
 import time
+import _thread
 from mm import *
 from config import *
 
-def main():
-    lastUpdate = 331301319
+def gasBot():
+    while True:
+        try:
+            gas = get_gas()
+            standard = gas['standard'] // 1e9
+            fast = gas['fast'] // 1e9
+            if standard <= 30:
+                msg = '''
+Gas is cheap right now!
+Fast: {}
+Standard: {}
+                '''.format(fast, standard)
+                telegram_bot_sendtext(msg)
+            time.sleep(60)
+        except:
+            telegram_bot_sendtext("Error with gasBot", chat_id)
+            break
+
+def chatBot():
+    lastUpdate = 331301684
     messages = getUpdates(lastUpdate)
     if len(messages['result']) > 0:
         lastUpdate = messages['result'][-1]['update_id']
@@ -77,7 +95,12 @@ Current BTC Price: ${}
                     historical = mm_job(ticker, 'histoday', data, False, False, True, True)
                     telegram_bot_sendtext('\n'.join(historical), chat_id)
                 elif command == 'stock' or command == 's2f':
-                    telegram_bot_sendtext("This feature is still in development.", chat_id)
+                    telegram_bot_sendtext("This feature is still in development, most likely permanently", chat_id)
+                elif command == 'gas':
+                    gas = get_gas()
+                    standard = gas['standard'] // 1e9
+                    fast = gas['fast'] // 1e9
+                    telegram_bot_sendtext("Fast: " + str(fast) + ", Standard: " + str(standard), chat_id)
                 else:
                     telegram_bot_sendtext("""
 These are the commands I recognize:
@@ -87,13 +110,22 @@ Close: emergency command to close currently open position
 Stock or s2f: shows an analysis of where bitcoin currently is on the Stock to Flow model
 Long: opens a long if there is no currently open position
 Short: opens a short if there is no currently open position
+Gas: current Ethereum gas prices
                     """, chat_id)
             if len(messages['result']) > 0:
                 lastUpdate = messages['result'][-1]['update_id'] + 1
-            time.sleep(1)
-        except :
-            telegram_bot_sendtext("Error with chat",chat_id)
+            time.sleep(3)
+        except:
+            telegram_bot_sendtext("Error with chatBot", chat_id)
             break
 
-if __name__ == '__main__':
-    main()
+
+try:
+    _thread.start_new_thread( gasBot, () )
+    _thread.start_new_thread( chatBot, () )
+except:
+    print ("Error: unable to start thread")
+
+while 1:
+   pass
+

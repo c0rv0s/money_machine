@@ -1,13 +1,15 @@
 import requests
 import hashlib
 import hmac
-import base64
 import time
 import urllib
 from datetime import datetime
 import os
 from tokens import *
 from config import *
+
+def get_gas():
+    return requests.get('https://www.gasnow.org/api/v3/gas/price?').json()['data']
 
 def log_error(error):
     filename = 'error_log.txt'
